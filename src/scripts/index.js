@@ -9,6 +9,10 @@ const inputName = document.querySelector('.input-search')
 function getUserProfile(userName) {
     user(userName).then(userData => {
         const htmlProfileData = document.querySelector('.profile-data')
+        if(userData.message === 'Not Found'){
+           return htmlProfileData.innerHTML = `<h3>Ops... 😞 usuário não encontrado, tente novamente</h3>`
+        } 
+
         const userInfo = `
             <div class = "info">
                 <img src = "${userData.avatar_url}" alt = "Foto do usuário"/>
@@ -48,15 +52,33 @@ function getUserRepositories(userName) {
 
 }
 
+function validateEmptyInput(inputName){
+    if(inputName.length === 0){
+        alert("Preencha o campo com o nome do usuário")
+        return true
+    }   
+}
+
 inputName.addEventListener('keyup', (e) => {
     const userName = inputName.value
+
     if (e.keyCode === 13) {
-        getUserProfile(userName)
+        if(validateEmptyInput(userName)){
+            return
+        } 
+        getUserProfile(userName)      
     }
+
 })
+
 
 btn.addEventListener('click', () => {
     const userName = inputName.value
+
+    if(validateEmptyInput(userName)){
+        return
+    }
+
     getUserProfile(userName)
 })
 
