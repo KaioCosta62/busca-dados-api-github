@@ -40,10 +40,17 @@ function getUserProfile(userName) {
 function getUserRepositories(userName) {
     const htmlProfileData = document.querySelector('.profile-data')
     repositories(userName).then(reposData => {
+        console.log(reposData)
         let repositoriesItens = ''
-        reposData.forEach(repo => {
+        reposData.forEach((repo, index) => {
             repositoriesItens += `
-                <li><a href = "${repo.html_url}" target="_blank"> ${repo.name} </a></li>
+                <div class = "info-repositories">
+                    <li><a href = "${repo.html_url}" target="_blank"> ${repo.name} </a></li>
+                    <span>Forks: ${repo.forks_count}</span>
+                    <span>Estrelas: ${repo.stargazers_count}</span>
+                    <span>Visualizações: ${repo.watchers_count}</span>
+                    <span>Linguagem: ${repo.language ?? 'Não identificada'}</span>
+                </div>
             `
         })
 

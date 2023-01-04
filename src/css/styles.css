@@ -157,6 +157,10 @@ main {
   color: #fff
 }
 
+.container .profile-data .info-repositories{
+  display: flex;
+  align-items: center;
+}
 .container .profile-data.hide{
   display: none;
 }
