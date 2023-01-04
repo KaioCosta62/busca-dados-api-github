@@ -161,6 +161,19 @@ main {
   display: none;
 }
 
+.container .events{
+  background-color: #ededed;
+  padding: 20px;
+}
+
+.container .events h2{
+  margin-bottom: 30px;
+}
+
+.container .events ul li{
+  margin-bottom: 20px;
+}
+
 
 @media (max-width: 1280px) {
   .container {

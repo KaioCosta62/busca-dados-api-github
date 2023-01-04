@@ -1,5 +1,7 @@
 
 import {user} from './services/user.js'
+import {events} from './services/events.js'
+
 import {repositories} from './services/repositories.js'
 
 
@@ -17,8 +19,11 @@ function getUserProfile(userName) {
             <div class = "info">
                 <img src = "${userData.avatar_url}" alt = "Foto do usuário"/>
                 <div class = "data">
-                    <h1>${userData.name ?? 'Não possui nome cadastrado 😢'}</h1>
-                    <p>${userData.bio ?? 'Não possui uma bio cadastrada 😢'} </p>
+                    <h1>${userData.name}</h1>
+                    <p>${userData.bio ?? 'O usuário não possui bio 😞'} </p>
+                    <p>@${userData.login}</p>
+                    <p>Total de seguidores: ${userData.followers}</p>
+                    <p>Total de pessoas que você segue: ${userData.following}</p>
                 </div>
             </div>
             
@@ -28,13 +33,14 @@ function getUserProfile(userName) {
     })
 
     getUserRepositories(userName)
+
+    getUserEventsProfile(userName)
 }
 
 function getUserRepositories(userName) {
     const htmlProfileData = document.querySelector('.profile-data')
     repositories(userName).then(reposData => {
         let repositoriesItens = ''
-        console.log(reposData)
         reposData.forEach(repo => {
             repositoriesItens += `
                 <li><a href = "${repo.html_url}" target="_blank"> ${repo.name} </a></li>
@@ -58,6 +64,30 @@ function validateEmptyInput(inputName){
         return true
     }   
 }
+
+function getUserEventsProfile(userName){
+    const htmlProfileData = document.querySelector('.profile-events')
+    events(userName).then(eventsData => {
+        let eventsItens = ''
+        eventsData.forEach((eventData, index) => {
+            console.log(index)
+            eventsItens += `
+                <li>
+                    <b>${eventData.repo.name}</b> - ${eventData.payload.commits[0].message}
+                </li>
+            `
+        })
+
+        htmlProfileData.innerHTML += `
+            <div class = 'events'>
+                <h2> Eventos </h2>
+                <ul> ${eventsItens} </ul>
+            </div>
+            
+        `
+    })
+}
+
 
 inputName.addEventListener('keyup', (e) => {
     const userName = inputName.value
